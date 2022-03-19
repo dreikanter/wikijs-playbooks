@@ -1,0 +1,71 @@
+---
+- name: "create installation directory for Wiki.js"
+  ansible.builtin.file:
+    path: /etc/wiki
+    state: directory
+
+- name: "check DB secret exists"
+  stat:
+    path: /etc/wiki/.db-secret
+  register: db_secret_file
+
+- name: "generate DB secret"
+  shell: "openssl rand -base64 32 > /etc/wiki/.db-secret"
+  when: not db_secret_file.stat.exists
+
+- name: "create internal docker network"
+  docker_network:
+    name: wikinet
+
+- name: "create data volume for PostgreSQL"
+  docker_volume:
+    name: pgdata
+
+- name: "create DB container"
+  docker_container:
+    name: db
+    hostname: db
+    image: "postgres:11"
+    env:
+      POSTGRES_DB: wiki
+      POSTGRES_USER: wiki
+      POSTGRES_PASSWORD_FILE: /etc/wiki/.db-secret
+    restart_policy: unless-stopped
+    volumes:
+      - "/etc/wiki/.db-secret:/etc/wiki/.db-secret:ro"
+      - "pgdata:/var/lib/postgresql/data"
+    networks:
+      - name: wikinet
+
+- name: "create wiki container"
+  docker_container:
+    name: wiki
+    hostname: wiki
+    image: "ghcr.io/requarks/wiki:2"
+    ports:
+      - "80:3000"
+      - "443:3443"
+    env:
+      DB_TYPE: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_PASS_FILE: /etc/wiki/.db-secret
+      DB_USER: wiki
+      DB_NAME: wiki
+      UPGRADE_COMPANION: 1
+    restart_policy: unless-stopped
+    volumes:
+      - "/etc/wiki/.db-secret:/etc/wiki/.db-secret:ro"
+    networks:
+      - name: wikinet
+
+- name: "create wiki-update-companion container"
+  docker_container:
+    name: wiki-update-companion
+    hostname: wiki-update-companion
+    image: "requarks/wiki-update-companion:latest"
+    restart_policy: unless-stopped
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - name: wikinet

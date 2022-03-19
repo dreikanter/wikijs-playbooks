@@ -28,6 +28,8 @@
       - docker-ce
       - docker-ce-cli
       - containerd.io
+      # NOTE: Required for Ansible Docker tasks
+      - python3-docker
     state: latest
     update_cache: true
     dpkg_options: "force-confdef,force-confold"
