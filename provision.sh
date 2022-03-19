@@ -1,2 +1,1 @@
-# Use -vvvv to debug
-ansible-playbook --inventory=inventory/production -vvv ./provision.yml
+ansible-playbook ./provision.yml -e "wiki_host=$WIKI_HOST"

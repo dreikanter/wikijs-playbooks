@@ -27,9 +27,9 @@
     hostname: db
     image: "postgres:11"
     env:
-      POSTGRES_DB: wiki
-      POSTGRES_USER: wiki
-      POSTGRES_PASSWORD_FILE: /etc/wiki/.db-secret
+      POSTGRES_DB: "wiki"
+      POSTGRES_USER: "wiki"
+      POSTGRES_PASSWORD_FILE: "/etc/wiki/.db-secret"
     restart_policy: unless-stopped
     volumes:
       - "/etc/wiki/.db-secret:/etc/wiki/.db-secret:ro"
@@ -46,13 +46,13 @@
       - "80:3000"
       - "443:3443"
     env:
-      DB_TYPE: postgres
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_PASS_FILE: /etc/wiki/.db-secret
-      DB_USER: wiki
-      DB_NAME: wiki
-      UPGRADE_COMPANION: 1
+      DB_TYPE: "postgres"
+      DB_HOST: "db"
+      DB_PORT: "5432"
+      DB_PASS_FILE: "/etc/wiki/.db-secret"
+      DB_USER: "wiki"
+      DB_NAME: "wiki"
+      UPGRADE_COMPANION: "1"
     restart_policy: unless-stopped
     volumes:
       - "/etc/wiki/.db-secret:/etc/wiki/.db-secret:ro"

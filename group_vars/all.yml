@@ -1,3 +1,4 @@
 ---
 timezone: UTC
 locale: en_US.UTF-8
+wiki_host: wiki.example.com
