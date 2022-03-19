@@ -1,0 +1,12 @@
+.DS_Store
+
+# Figaro configuration file
+config/application.yml
+
+# Temporary files and logs
+/log
+/tmp
+
+# Ansible
+*.retry
+*.pyc
