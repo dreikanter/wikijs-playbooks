@@ -1,6 +1,6 @@
 ---
 - name: "create installation directory for Wiki.js"
-  ansible.builtin.file:
+  file:
     path: /etc/wiki
     state: directory
 
