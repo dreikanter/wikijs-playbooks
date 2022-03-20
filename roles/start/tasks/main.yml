@@ -1,6 +1,0 @@
----
-- name: "start containers"
-  shell: |
-    docker start db
-    docker start wiki
-    docker start wiki-update-companion

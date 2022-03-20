@@ -26,6 +26,7 @@
     name: db
     hostname: db
     image: "postgres:11"
+    state: started
     env:
       POSTGRES_DB: "wiki"
       POSTGRES_USER: "wiki"
@@ -42,6 +43,7 @@
     name: wiki
     hostname: wiki
     image: "ghcr.io/requarks/wiki:2"
+    state: started
     ports:
       - "80:3000"
       - "443:3443"
@@ -64,6 +66,7 @@
     name: wiki-update-companion
     hostname: wiki-update-companion
     image: "requarks/wiki-update-companion:latest"
+    state: started
     restart_policy: unless-stopped
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
