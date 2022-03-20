@@ -16,8 +16,8 @@
       DB_USER: "wiki"
       DB_NAME: "wiki"
       UPGRADE_COMPANION: "1"
-      LETSENCRYPT_DOMAIN: "wiki.example.com"
-      LETSENCRYPT_EMAIL: "admin@example.com"
+      LETSENCRYPT_DOMAIN: "{{ letsencrypt_domain }}"
+      LETSENCRYPT_EMAIL: "{{ letsencrypt_email }}"
       SSL_ACTIVE: "1"
     restart_policy: unless-stopped
     volumes:
